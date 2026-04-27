@@ -1,0 +1,209 @@
+version: "1.0.0"
+title: "🎯 SOHO SPARC Workflow"
+description: |
+  Full SPARC methodology implementation: Specification → Pseudocode → Architecture →
+  Refinement → Completion. A structured, phased approach to complex software development
+  that catches design flaws before implementation and ensures completeness before delivery.
+
+instructions: |
+  You are executing the SPARC methodology — a five-phase structured development process.
+  Each phase produces concrete artifacts that feed the next phase. No phase is skipped.
+  No phase is half-done. Each phase must be COMPLETE before moving to the next.
+
+  ═══════════════════════════════════════════════════════════════════════════════
+  PHASE S — SPECIFICATION
+  ═══════════════════════════════════════════════════════════════════════════════
+
+  Goal: Define EXACTLY what needs to be built. Remove all ambiguity.
+
+  Produce these artifacts:
+
+  1. Problem Statement
+     - What problem are we solving?
+     - Who has this problem?
+     - What's the current state (pain points)?
+     - What's the desired state (success criteria)?
+
+  2. User Stories (for each persona)
+     Format: As a [role], I want [capability], so that [benefit].
+     Each story includes:
+     - Acceptance criteria (Given/When/Then)
+     - Priority (Must/Should/Could/Won't)
+     - Estimated complexity (S/M/L/XL)
+
+  3. Functional Requirements
+     - Numbered list of what the system MUST do
+     - Input/output specifications for each
+     - Business rules and validation rules
+     - Error handling requirements
+
+  4. Non-Functional Requirements
+     - Performance targets (response time, throughput)
+     - Scalability requirements (users, data volume)
+     - Security requirements (auth, encryption, compliance)
+     - Reliability requirements (uptime, recovery)
+     - Accessibility requirements (WCAG level)
+
+  5. Constraints
+     - Technology constraints
+     - Timeline constraints
+     - Budget/resource constraints
+     - Regulatory/compliance constraints
+
+  6. Out of Scope
+     - Explicitly list what is NOT being built
+     - This prevents scope creep
+
+  ═══════════════════════════════════════════════════════════════════════════════
+  PHASE P — PSEUDOCODE
+  ═══════════════════════════════════════════════════════════════════════════════
+
+  Goal: Design the algorithms and logic BEFORE writing real code.
+  This catches design flaws when they're cheap to fix.
+
+  For each major feature/component:
+
+  1. Algorithm Design
+     - Write pseudocode for the core logic
+     - Identify data structures needed
+     - Map control flow (loops, conditionals, recursion)
+     - Identify edge cases in the algorithm
+     - Analyze time/space complexity
+
+  2. State Machine Design
+     - Identify all states the system can be in
+     - Map valid transitions between states
+     - Define entry/exit actions for each state
+     - Identify error states and recovery paths
+
+  3. Data Flow Design
+     - Map how data enters the system
+     - Trace data transformations through the pipeline
+     - Identify where data is stored/cached
+     - Map how data exits the system (responses, events)
+
+  4. Error Handling Design
+     - Categorize error types (validation, business, system, external)
+     - Define error propagation strategy
+     - Design retry/fallback logic
+     - Plan error reporting and logging
+
+  ═══════════════════════════════════════════════════════════════════════════════
+  PHASE A — ARCHITECTURE
+  ═══════════════════════════════════════════════════════════════════════════════
+
+  Goal: Design the system structure. Components, interfaces, data models.
+
+  1. Component Architecture
+     - Define bounded contexts (DDD)
+     - Design component boundaries and responsibilities
+     - Define interfaces between components
+     - Map dependency graph (ensure no cycles)
+
+  2. Data Architecture
+     - Design database schemas
+     - Define entity relationships
+     - Plan caching strategy
+     - Design event schemas (if event-driven)
+
+  3. API Architecture
+     - Define endpoints/methods
+     - Design request/response schemas
+     - Plan authentication/authorization
+     - Design error response format
+
+  4. Architecture Decision Records (ADRs)
+     For each significant decision:
+     - Context: Why this decision is needed
+     - Decision: What was decided
+     - Alternatives: What else was considered
+     - Consequences: Trade-offs accepted
+
+  5. Diagrams (Mermaid format)
+     - System context diagram
+     - Component diagram
+     - Sequence diagrams for key flows
+     - Data model diagram
+
+  ═══════════════════════════════════════════════════════════════════════════════
+  PHASE R — REFINEMENT
+  ═══════════════════════════════════════════════════════════════════════════════
+
+  Goal: Implement and iteratively improve until production-ready.
+
+  Iteration cycle (repeat until all acceptance criteria met):
+
+  1. IMPLEMENT
+     - Write code following the architecture from Phase A
+     - Follow the algorithms from Phase P
+     - Use TDD: write test → make it pass → refactor
+     - Commit after each logical unit of work
+
+  2. REVIEW
+     - Self-review against the specification from Phase S
+     - Check code quality (naming, structure, complexity)
+     - Verify error handling completeness
+     - Check security (input validation, auth, secrets)
+
+  3. TEST
+     - Run full test suite
+     - Check coverage against targets
+     - Test edge cases identified in Phase P
+     - Integration test component boundaries
+
+  4. OPTIMIZE
+     - Profile for performance bottlenecks
+     - Optimize hot paths
+     - Reduce memory usage where possible
+     - Verify no regressions after optimization
+
+  ═══════════════════════════════════════════════════════════════════════════════
+  PHASE C — COMPLETION
+  ═══════════════════════════════════════════════════════════════════════════════
+
+  Goal: Verify everything is done. No loose ends. Ship-ready.
+
+  Completion Checklist:
+  □ All acceptance criteria from Phase S are met
+  □ All tests pass (unit, integration, e2e)
+  □ Coverage meets target (>90%)
+  □ No TODO/FIXME/HACK comments remain
+  □ All public APIs are documented
+  □ README is complete and accurate
+  □ CHANGELOG is updated
+  □ No security vulnerabilities (run audit)
+  □ No performance regressions
+  □ Error handling is complete
+  □ Logging is appropriate (not too verbose, not too sparse)
+  □ Configuration is documented
+  □ Deployment instructions are clear
+  □ Rollback procedure is documented
+
+  Final Output:
+  - All source code files
+  - All test files
+  - All documentation
+  - SPARC completion report with phase-by-phase summary
+
+parameters:
+  - key: task_description
+    input_type: string
+    requirement: required
+    description: "Description of what needs to be built"
+  - key: complexity
+    input_type: select
+    requirement: optional
+    description: "Task complexity level"
+    default: "medium"
+    options:
+      - "simple"
+      - "medium"
+      - "complex"
+      - "epic"
+
+extensions:
+  - type: builtin
+    name: developer
+    timeout: 300
+    bundled: true
+    description: "Core developer tools for file operations and shell commands"

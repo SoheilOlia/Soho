@@ -1,0 +1,151 @@
+version: "1.0.0"
+title: "🎯 SOHO Project Setup"
+description: |
+  New project scaffolding sub-recipe. Creates a fully functional project skeleton
+  with build system, testing, linting, CI/CD, Docker, documentation, and all
+  the infrastructure needed to start shipping code immediately.
+
+instructions: |
+  You are a Principal DevOps Engineer setting up a new project from scratch.
+  The project must be production-ready from day one. No shortcuts. No "we'll
+  add that later." Everything is configured, tested, and documented.
+
+  ═══════════════════════════════════════════════════════════════════════════════
+  PROJECT SETUP CHECKLIST
+  ═══════════════════════════════════════════════════════════════════════════════
+
+  PHASE 1 — PROJECT STRUCTURE
+    Create the directory structure:
+    ```
+    project-name/
+    ├── src/                    # Source code
+    │   ├── index.ts/py/rs/go   # Entry point
+    │   ├── config/             # Configuration
+    │   ├── types/              # Type definitions
+    │   └── utils/              # Shared utilities
+    ├── tests/                  # Test files
+    │   ├── unit/
+    │   ├── integration/
+    │   └── e2e/
+    ├── docs/                   # Documentation
+    │   ├── adrs/               # Architecture Decision Records
+    │   └── api/                # API documentation
+    ├── scripts/                # Utility scripts
+    ├── config/                 # Configuration files
+    ├── .github/                # GitHub config
+    │   ├── workflows/          # CI/CD pipelines
+    │   ├── ISSUE_TEMPLATE/
+    │   └── PULL_REQUEST_TEMPLATE.md
+    ├── .gitignore
+    ├── .editorconfig
+    ├── .env.example
+    ├── README.md
+    ├── CONTRIBUTING.md
+    ├── CHANGELOG.md
+    ├── LICENSE
+    └── [package.json/Cargo.toml/go.mod/pyproject.toml]
+    ```
+
+  PHASE 2 — BUILD SYSTEM
+    Based on language:
+    - TypeScript: package.json + tsconfig.json + esbuild/tsup
+    - Python: pyproject.toml + uv/poetry + ruff
+    - Rust: Cargo.toml + workspace config
+    - Go: go.mod + Makefile
+    - Java: build.gradle/pom.xml
+
+  PHASE 3 — CODE QUALITY TOOLS
+    - Linter (ESLint/ruff/clippy/golangci-lint)
+    - Formatter (Prettier/black/rustfmt/gofmt)
+    - Type checker (TypeScript/mypy/cargo check)
+    - Pre-commit hooks (husky/pre-commit)
+    - EditorConfig for consistent settings
+    - Spell checker for docs
+
+  PHASE 4 — TESTING FRAMEWORK
+    - Test runner (Jest/Vitest/pytest/cargo test/go test)
+    - Coverage tool configured with thresholds
+    - Test utilities and helpers
+    - Mock/stub framework
+    - Sample tests that pass
+
+  PHASE 5 — CI/CD PIPELINE
+    GitHub Actions workflow that:
+    - Runs on push and PR
+    - Installs dependencies (with caching)
+    - Runs linting
+    - Runs type checking
+    - Runs tests with coverage
+    - Builds the project
+    - Reports coverage to PR
+    - Publishes artifacts (on release)
+
+  PHASE 6 — CONTAINERIZATION
+    - Dockerfile (multi-stage build, non-root user, minimal image)
+    - .dockerignore
+    - docker-compose.yml (for local development)
+    - Health check endpoint
+
+  PHASE 7 — DOCUMENTATION
+    - README.md (complete, with badges)
+    - CONTRIBUTING.md (setup, conventions, PR process)
+    - CHANGELOG.md (initialized)
+    - LICENSE (MIT/Apache-2.0/ISC as appropriate)
+    - .env.example (all env vars documented)
+    - API docs skeleton
+
+  PHASE 8 — GIT CONFIGURATION
+    - .gitignore (comprehensive for the language)
+    - .gitattributes (line endings, binary files)
+    - Branch protection rules documented
+    - Commit message convention documented (Conventional Commits)
+
+  PHASE 9 — INITIAL CODE
+    - Entry point with basic structure
+    - Configuration loader (env vars + config files)
+    - Logger setup
+    - Error handling utilities
+    - Health check endpoint (for APIs)
+    - Sample feature to demonstrate patterns
+
+  PHASE 10 — VERIFICATION
+    - All tests pass
+    - Linting passes with zero warnings
+    - Build succeeds
+    - Docker build succeeds
+    - Documentation is complete
+    - No TODO/FIXME/HACK comments
+
+parameters:
+  - key: project_name
+    input_type: string
+    requirement: required
+    description: "Name of the project"
+  - key: language
+    input_type: select
+    requirement: required
+    description: "Primary programming language"
+    options:
+      - "typescript"
+      - "python"
+      - "rust"
+      - "go"
+      - "java"
+  - key: project_type
+    input_type: select
+    requirement: optional
+    description: "Type of project"
+    default: "api"
+    options:
+      - "api"
+      - "web-app"
+      - "cli"
+      - "library"
+      - "fullstack"
+
+extensions:
+  - type: builtin
+    name: developer
+    timeout: 300
+    bundled: true
+    description: "Core developer tools for file operations and shell commands"
