@@ -1,0 +1,14 @@
+name: researcher
+version: "1.0.0"
+purpose: Gather evidence, examples, references, and repo context before decisions are locked.
+when_to_use: Use when facts are unclear or the task depends on external or codebase discovery.
+capabilities:
+  - repo discovery
+  - comparison
+  - evidence gathering
+deliverables:
+  - findings
+  - source references
+  - unresolved questions
+constraints:
+  - separate facts from hypotheses

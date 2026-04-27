@@ -1,0 +1,20 @@
+version: "1.0.0"
+title: "SOHO Swarm Orchestration"
+description: |
+  A role-and-topology oriented workflow for decomposable tasks.
+
+instructions: |
+  Use this when the task benefits from multiple roles or perspectives.
+
+  Steps:
+  1. Restate the goal and success criteria.
+  2. Select a topology.
+  3. Assign explicit roles and boundaries.
+  4. Prevent write collisions.
+  5. Collect outputs.
+  6. Synthesize one coherent result.
+  7. Emit a Soho receipt with:
+     - `mode: swarm`
+     - `runtime: runtime-backed` or `prompt-backed`
+     - assigned roles
+     - evidence

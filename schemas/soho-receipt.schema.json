@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Soho Receipt Schema",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "host",
+    "mode",
+    "runtime",
+    "task_summary",
+    "evidence",
+    "outputs",
+    "confidence"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string"
+    },
+    "host": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "solo",
+        "swarm",
+        "recommend"
+      ]
+    },
+    "runtime": {
+      "type": "string",
+      "enum": [
+        "prompt-backed",
+        "runtime-backed",
+        "host-dependent"
+      ]
+    },
+    "task_summary": {
+      "type": "string"
+    },
+    "topology": {
+      "type": "string"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    }
+  }
+}

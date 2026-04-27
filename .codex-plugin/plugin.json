@@ -1,0 +1,40 @@
+{
+  "name": "soho",
+  "version": "2.0.0",
+  "description": "A layered agent engineering system that combines rigorous methodology with explicit swarm orchestration.",
+  "author": {
+    "name": "Soheil Olia",
+    "url": "https://github.com/SoheilOlia"
+  },
+  "homepage": "https://github.com/SoheilOlia/Soho",
+  "repository": "https://github.com/SoheilOlia/Soho",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "workflow",
+    "orchestration",
+    "tdd",
+    "planning",
+    "verification",
+    "swarm"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Soho",
+    "shortDescription": "Methodology plus orchestration for coding agents",
+    "longDescription": "Use Soho to combine design-first planning, TDD, systematic verification, role-based delegation, topology selection, and synthesis with honest runtime receipts.",
+    "developerName": "Soheil Olia",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use Soho to plan and build this feature.",
+      "Use Soho swarm mode to decompose and verify this task."
+    ],
+    "brandColor": "#0F766E",
+    "screenshots": []
+  }
+}

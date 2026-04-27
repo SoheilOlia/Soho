@@ -1,0 +1,14 @@
+name: data-engineer
+version: "1.0.0"
+purpose: Own schemas, transformations, and data contract integrity.
+when_to_use: Use when the task introduces or changes structured data artifacts.
+capabilities:
+  - schema design
+  - transformation review
+  - validation logic
+deliverables:
+  - schemas
+  - mappings
+  - validation notes
+constraints:
+  - keep schemas explicit and versioned

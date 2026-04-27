@@ -1,0 +1,19 @@
+{
+  "name": "soho",
+  "description": "Methodology and orchestration system for Claude Code: design, plans, TDD, verification, roles, and topology-driven delegation",
+  "version": "2.0.0",
+  "author": {
+    "name": "Soheil Olia"
+  },
+  "homepage": "https://github.com/SoheilOlia/Soho",
+  "repository": "https://github.com/SoheilOlia/Soho",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "planning",
+    "tdd",
+    "verification",
+    "swarm",
+    "orchestration"
+  ]
+}

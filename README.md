@@ -1,13 +1,49 @@
-# 🌊 SOHO — Swarm Orchestration with Disciplined Methodology
+# SOHO
 
-A unified AI development recipe for [Goose](https://github.com/block/goose) that combines two paradigms:
+SOHO is an opinionated agent engineering system that combines:
 
-- **[superpowers](https://github.com/obra/superpowers)** → 14 composable skills that auto-activate (brainstorming, TDD, systematic debugging, subagent-driven development, code review, verification). Process discipline for one elite agent.
-- **[ruflo](https://github.com/ruvnet/ruflo)** → Multi-agent swarm orchestration with 16 specialized roles, 4 topologies, SPARC methodology, and anti-drift coordination. Team coordination for many agents.
+- **Superpowers-style methodology**: brainstorm before building, write plans before editing, use TDD for behavior changes, debug from root cause, and verify every claim.
+- **Ruflo-style orchestration**: choose solo versus swarm deliberately, assign explicit roles, pick a topology, prevent drift, and synthesize outputs into one verified result.
 
-**The result**: every agent in the swarm operates with superpowers-level discipline, and the orchestrator coordinates them with ruflo-level sophistication.
+This repository is not a single prompt pretending to be a platform. It is a layered package with:
+
+- a **Goose recipe** for `/soho`
+- **Codex / Claude / Cursor plugin metadata**
+- a **Soho skill library**
+- a **role catalog** for orchestrated work
+- **schemas** for receipts and role definitions
+- a **validation suite** that checks the repo’s own integrity
+
+## What Soho Is
+
+Soho is the product surface. It is meant to feel like one thing:
+
+- `/soho` in Goose
+- the `soho` plugin in Codex / Claude / Cursor
+- a disciplined, evidence-first workflow across solo and multi-agent work
+
+Internally, Soho is split into layers so it stays honest:
+
+1. **Core policy**: capability claims, receipts, claim typing, evidence rules
+2. **Methodology skills**: design, planning, TDD, debugging, verification
+3. **Swarm orchestration**: role selection, topology choice, delegation contracts, synthesis
+4. **Host adapters**: Goose, Codex, Claude, Cursor surfaces
+
+## Capability Truth
+
+Read [docs/capability-matrix.md](docs/capability-matrix.md) before assuming a feature is runtime-backed.
+
+The short version:
+
+- **Prompt-backed**: methodology, role contracts, topology guidance, receipt discipline
+- **Runtime-backed**: repository validation, host plugin manifests, Goose recipe install, receipt schema validation
+- **Host-dependent**: actual parallel agent spawning and orchestration
+
+Soho does not fake receipts. If the host cannot spawn agents, Soho falls back to a serial role-pass workflow and says so explicitly.
 
 ## Install
+
+### Goose
 
 ```bash
 git clone https://github.com/SoheilOlia/Soho.git
@@ -15,123 +51,98 @@ cd Soho
 ./install.sh
 ```
 
-Or manually:
+This validates the repo and installs:
 
-```bash
-cp soho.yaml ~/.config/goose/recipes/soho.yaml
-```
+- `soho.yaml`
+- all `sub-recipes/*.yaml`
+
+to `~/.config/goose/recipes/`.
+
+### Codex / Claude / Cursor
+
+Use the local plugin manifests in:
+
+- [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json)
+- [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json)
+- [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json)
+
+and point your host at this repository as a local plugin / skills source.
 
 ## Use
 
-Start a new Goose session and type:
+### Goose
 
-```
+Start a Goose session and run:
+
+```text
 /soho
 ```
 
-Then describe what you want to build. SOHO handles the rest.
+### Skill-first hosts
 
-## Three-Mode Decision System
+Activate the `using-soho` skill, then describe the work.
 
-SOHO automatically decides whether to work solo or deploy a swarm:
+## Soho Modes
 
-| Mode | When | Receipt |
-|------|------|---------|
-| 🎯 **Auto-Solo** | Obvious simple tasks (typo, single edit, config tweak) | "🎯 Running solo — full discipline" |
-| 🌊 **Auto-Swarm** | Obvious complex tasks (new project, 5+ files, audit, migration) | "🌊 Running as team: [agents] — [topology]" |
-| 🤔 **Recommend** | Ambiguous (medium feature, unclear scope) | "🤔 This could go either way. My recommendation: ..." |
+| Mode | When | Output |
+|---|---|---|
+| `solo` | tight, local, single-lane work | one agent with full Soho discipline |
+| `swarm` | multi-part work with separable concerns | topology + roles + delegation plan + synthesis |
+| `recommend` | ambiguous tasks | explicit recommendation plus why |
 
-Override anytime: "swarm this" / "just do it" / "what do you think?"
+## Core Rules
 
-## What's Inside
+- No creative implementation without a design checkpoint.
+- No multi-step implementation without a written plan.
+- No behavior change without test-first proof.
+- No bug fix without root cause evidence.
+- No completion claim without fresh verification.
+- No swarm theater: if orchestration is not actually runtime-backed in the host, Soho must say so.
 
-### 14 Auto-Activating Skills (from superpowers)
+## Repository Layout
 
-| # | Skill | Iron Law |
-|---|-------|----------|
-| 1 | Brainstorming | No code without design approval |
-| 2 | Writing Plans | No placeholders — EVER |
-| 3 | TDD | No production code without failing test first |
-| 4 | Systematic Debugging | No fixes without root cause |
-| 5 | Subagent-Driven Dev | Two-stage review (spec + quality) |
-| 6 | Executing Plans | Follow steps exactly |
-| 7 | Git Worktrees | Verify .gitignore before creating |
-| 8 | Finishing a Branch | Tests must pass to proceed |
-| 9 | Parallel Agents | Independent domains only |
-| 10 | Requesting Code Review | Mandatory after major changes |
-| 11 | Receiving Code Review | Verify before implementing |
-| 12 | Verification | No claims without fresh evidence |
-| 13 | Writing Skills | Gate functions, red flags, checklists |
-| 14 | Root Cause Tracing | Fix at source, not symptom |
-
-### 16 Specialized Agent Roles (from ruflo)
-
-| Role | Specialization |
-|------|----------------|
-| 🎯 Coordinator | Decomposes tasks, assigns work, enforces anti-drift |
-| 💻 Coder | Production code, features, TDD |
-| 🧪 Tester | Tests (unit/integration/e2e), >90% coverage |
-| 🔍 Reviewer | Code quality, correctness, security |
-| 🏗️ Architect | System design, ADRs, interfaces |
-| 🔬 Researcher | Requirements analysis, investigation |
-| 🛡️ Security Architect | OWASP Top 10, CWE, secrets scanning |
-| ⚡ Performance Engineer | Profiling, optimization, benchmarks |
-| 📝 Documenter | Docs, API specs, guides |
-| 🔧 DevOps Engineer | CI/CD, Docker, infrastructure |
-| 📊 Data Engineer | Schemas, migrations, queries |
-| 🎨 Frontend Specialist | UI, accessibility, responsive design |
-| 📱 Mobile Specialist | iOS/Android development |
-| 🧠 ML/AI Specialist | ML pipelines, model training |
-| 🔄 Migration Specialist | Framework upgrades, compatibility |
-| 🚀 Release Manager | Versioning, changelogs, deployment |
-
-### 4 Swarm Topologies
-
-- **Hierarchical** — Coordinator at top, best for coding tasks (anti-drift)
-- **Mesh** — Peer-to-peer, best for research and exploration
-- **Ring** — Sequential pipeline, best for CI/CD and data processing
-- **Star** — Hub-and-spoke, best for parallel independent work
-
-### 10 Sub-Recipes
-
-Deep-dive workflows for: security audit, performance optimization, code review, architecture design, test suite generation, documentation, migration, project setup, SPARC workflow, release management.
-
-### SPARC Methodology
-
-**S**pecification → **P**seudocode → **A**rchitecture → **R**efinement → **C**ompletion
-
-## Philosophy
-
-> The marginal cost of completeness is near zero with AI. Do the whole thing. Do it right. Do it with tests. Do it with documentation. Do it so well that you are genuinely impressed — not politely satisfied, actually impressed.
->
-> The standard isn't "good enough" — it's "holy shit, that's done."
-
-## File Structure
-
-```
+```text
 Soho/
-├── soho.yaml          # Main recipe (763 lines)
-├── sub-recipes/       # 10 deep-dive workflows
-│   ├── security-audit.yaml
-│   ├── performance-optimization.yaml
-│   ├── code-review.yaml
-│   ├── architecture-design.yaml
-│   ├── test-suite.yaml
-│   ├── documentation.yaml
-│   ├── migration.yaml
-│   ├── project-setup.yaml
-│   ├── sparc-workflow.yaml
-│   └── release-management.yaml
-├── install.sh         # One-command installer
-├── LICENSE            # MIT
-└── README.md          # This file
+├── soho.yaml
+├── sub-recipes/
+├── skills/
+├── roles/
+├── commands/
+├── schemas/
+├── scripts/
+├── tests/
+├── docs/
+├── .codex-plugin/
+├── .claude-plugin/
+└── .cursor-plugin/
 ```
+
+## Validation
+
+Run:
+
+```bash
+make check
+```
+
+This performs:
+
+- structural validation with `scripts/validate.py`
+- repository tests in `tests/test_repo.py`
+
+## Documentation
+
+- [docs/architecture.md](docs/architecture.md)
+- [docs/capability-matrix.md](docs/capability-matrix.md)
+- [docs/testing.md](docs/testing.md)
+- [docs/specs/2026-04-27-soho-platform-design.md](docs/specs/2026-04-27-soho-platform-design.md)
+- [docs/plans/2026-04-27-soho-platform-implementation.md](docs/plans/2026-04-27-soho-platform-implementation.md)
 
 ## Credits
 
-- **superpowers** by [Jesse Vincent (obra)](https://github.com/obra/superpowers) — the skill discipline system
-- **ruflo** by [Ruv (ruvnet)](https://github.com/ruvnet/ruflo) — the swarm orchestration system
-- **Goose** by [Block](https://github.com/block/goose) — the platform
+- [Superpowers](https://github.com/obra/superpowers) for the methodology inspiration
+- [Ruflo](https://github.com/ruvnet/ruflo) for the orchestration inspiration
+- [Goose](https://github.com/block/goose) for the recipe host
 
 ## License
 

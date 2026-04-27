@@ -1,0 +1,15 @@
+version: "1.0.0"
+title: "SOHO Solo Execution"
+description: |
+  A focused workflow for tasks that should stay in one execution lane.
+
+instructions: |
+  Use this when the work should remain in one lane.
+
+  Steps:
+  1. Clarify the goal.
+  2. Write or confirm the design.
+  3. Write the implementation plan.
+  4. Execute with TDD.
+  5. Verify with fresh evidence.
+  6. Emit a Soho receipt with `mode: solo`.

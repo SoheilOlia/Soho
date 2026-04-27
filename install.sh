@@ -1,40 +1,25 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-# SOHO Installer — Swarm Orchestration with Disciplined Methodology
-# Installs the /soho recipe into your Goose config directory
-
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RECIPE_DIR="${HOME}/.config/goose/recipes"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "🌊 SOHO Installer"
-echo "═══════════════════════════════════════"
-echo ""
+echo "SOHO installer"
+echo
 
-# Create recipes directory if it doesn't exist
+python3 "${REPO_DIR}/scripts/validate.py"
+
 mkdir -p "${RECIPE_DIR}"
+cp "${REPO_DIR}/soho.yaml" "${RECIPE_DIR}/soho.yaml"
 
-# Copy main recipe
-cp "${SCRIPT_DIR}/soho.yaml" "${RECIPE_DIR}/soho.yaml"
-echo "✅ Installed soho.yaml → ${RECIPE_DIR}/soho.yaml"
-
-# Copy sub-recipes (if they exist)
-if [ -d "${SCRIPT_DIR}/sub-recipes" ]; then
-    mkdir -p "${RECIPE_DIR}/sub-recipes"
-    cp "${SCRIPT_DIR}/sub-recipes/"*.yaml "${RECIPE_DIR}/sub-recipes/"
-    echo "✅ Installed $(ls "${SCRIPT_DIR}/sub-recipes/"*.yaml | wc -l | tr -d ' ') sub-recipes → ${RECIPE_DIR}/sub-recipes/"
+if [ -d "${REPO_DIR}/sub-recipes" ]; then
+  mkdir -p "${RECIPE_DIR}/sub-recipes"
+  cp "${REPO_DIR}/sub-recipes/"*.yaml "${RECIPE_DIR}/sub-recipes/"
 fi
 
-echo ""
-echo "═══════════════════════════════════════"
-echo "🌊 SOHO installed. Start a new Goose session and type /soho"
-echo ""
-echo "What's inside:"
-echo "  • 14 auto-activating skills (from superpowers)"
-echo "  • 16 specialized agent roles (from ruflo)"
-echo "  • 4 swarm topologies (hierarchical, mesh, ring, star)"
-echo "  • 3-mode decision system (auto-solo, auto-swarm, recommend)"
-echo "  • 10 deep-dive sub-recipes"
-echo "  • SPARC methodology"
-echo ""
-echo "To uninstall: rm ${RECIPE_DIR}/soho.yaml"
+echo "Installed Goose recipe files to ${RECIPE_DIR}"
+echo
+echo "Next steps:"
+echo "  1. Start Goose and run /soho"
+echo "  2. For Codex / Claude / Cursor, use the local plugin manifests in this repo"
+echo "  3. Read docs/capability-matrix.md before relying on host-dependent swarm behavior"
