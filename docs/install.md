@@ -85,6 +85,18 @@ git pull --ff-only
 
 or rerun the bootstrap command, which handles this automatically.
 
+## DMG Install
+
+Soho can also be packaged as a macOS DMG:
+
+```bash
+make dmg
+```
+
+The generated DMG contains `Install Soho.command`. That installer copies Soho to `~/agent-plugins/soho` before running `scripts/install-global.sh`, so global plugin paths do not point back to the mounted DMG.
+
+See [packaging.md](packaging.md) for build, install, and verification details.
+
 ## Claude Code
 
 Claude Code supports plugin management through the `claude plugin` CLI:

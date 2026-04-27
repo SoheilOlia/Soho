@@ -168,10 +168,12 @@ def validate_docs(errors):
     for doc in (
         "docs/architecture.md",
         "docs/install.md",
+        "docs/packaging.md",
         "docs/capability-matrix.md",
         "docs/testing.md",
         "docs/specs/2026-04-27-soho-platform-design.md",
         "docs/plans/2026-04-27-soho-platform-implementation.md",
+        "docs/plans/2026-04-27-soho-dmg-packaging.md",
     ):
         validate_file_exists(doc, errors)
 
@@ -189,6 +191,7 @@ def validate_scripts(errors):
     for script in (
         "install.sh",
         "scripts/bootstrap.sh",
+        "scripts/build-dmg.sh",
         "scripts/install-global.sh",
         "scripts/validate.py",
     ):

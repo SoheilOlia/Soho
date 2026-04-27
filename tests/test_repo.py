@@ -124,6 +124,56 @@ class RepoStructureTests(unittest.TestCase):
         self.assertIn("claude plugin marketplace add", install_text)
         self.assertIn("claude plugin install", install_text)
 
+    def test_dmg_packaging_script_is_executable_and_documented(self):
+        script = REPO_ROOT / "scripts" / "build-dmg.sh"
+        self.assertTrue(script.exists())
+        self.assertTrue(os.access(script, os.X_OK))
+
+        makefile_text = (REPO_ROOT / "Makefile").read_text()
+        self.assertIn("dmg:", makefile_text)
+        self.assertIn("scripts/build-dmg.sh", makefile_text)
+
+        packaging_text = (REPO_ROOT / "docs" / "packaging.md").read_text()
+        self.assertIn("make dmg", packaging_text)
+        self.assertIn("Install Soho.command", packaging_text)
+
+    def test_dmg_packaging_dry_run_stages_installer(self):
+        with tempfile.TemporaryDirectory() as temp_root:
+            dist_dir = Path(temp_root) / "dist"
+            build_dir = Path(temp_root) / "build"
+            subprocess.run(
+                ["bash", "scripts/build-dmg.sh"],
+                cwd=REPO_ROOT,
+                env={
+                    **os.environ,
+                    "DIST_DIR": str(dist_dir),
+                    "BUILD_DIR": str(build_dir),
+                    "SOHO_DMG_DRY_RUN": "1",
+                },
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+
+            stage_dir = build_dir / "stage"
+            installer = stage_dir / "Install Soho.command"
+            readme = stage_dir / "README.txt"
+            source_dir = stage_dir / "Soho"
+
+            self.assertTrue(installer.exists())
+            self.assertTrue(os.access(installer, os.X_OK))
+            self.assertTrue(readme.exists())
+            self.assertTrue((source_dir / "scripts" / "install-global.sh").exists())
+            self.assertFalse((source_dir / ".git").exists())
+
+            installer_text = installer.read_text()
+            self.assertIn("SOHO_INSTALL_DIR", installer_text)
+            self.assertIn("rsync -a", installer_text)
+            self.assertIn("./scripts/install-global.sh", installer_text)
+            self.assertIn("claude plugin marketplace add", installer_text)
+            self.assertIn("goose recipe open soho", installer_text)
+
     def test_bootstrap_script_clones_then_updates(self):
         with tempfile.TemporaryDirectory() as temp_root:
             remote_source = Path(temp_root) / "remote-source"

@@ -147,6 +147,16 @@ git pull --ff-only
 
 Or rerun the bootstrap command; it handles both clone and update.
 
+## DMG Packaging
+
+On macOS, build a local installer DMG with:
+
+```bash
+make dmg
+```
+
+The output is written to `dist/Soho-<version>.dmg`. The DMG contains a bundled source snapshot and `Install Soho.command`, which copies Soho into `~/agent-plugins/soho` before running the global installer. See [docs/packaging.md](docs/packaging.md).
+
 ## Use
 
 ### Goose
