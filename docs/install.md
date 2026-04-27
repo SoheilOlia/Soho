@@ -42,10 +42,12 @@ git pull --ff-only
 
 | Host | Install path | Status |
 |---|---|---|
-| Goose | `~/.config/goose/recipes` | verified |
+| Goose | `~/.config/goose/recipes`, opened with `goose recipe open soho` | verified recipe install |
 | Codex | `~/.agents/skills/soho -> repo/skills` | verified |
 | Claude Code | local marketplace at `~/.claude/plugins/marketplaces/soho-dev` plus `/plugin install soho@soho-dev` | verified path, manual install command still required |
 | Cursor | `~/.cursor/plugins/local/soho` | best-effort local plugin path on this machine |
+
+Soho is not currently published to a public marketplace. These are local installs. Marketplace UIs will not show Soho unless the host explicitly supports adding local marketplaces or scanning local plugin paths.
 
 ## What `install-global.sh` Does
 
@@ -54,6 +56,22 @@ git pull --ff-only
 3. installs a Codex global skills symlink
 4. installs a Claude Code local marketplace symlink
 5. installs a Cursor local plugin symlink
+
+## Goose
+
+The installer copies `soho.yaml` and `sub-recipes/*.yaml` into Goose's recipe directory:
+
+```text
+~/.config/goose/recipes
+```
+
+Open Soho with:
+
+```bash
+goose recipe open soho
+```
+
+Do not expect `/soho` to appear in the Goose slash-command menu. Goose recipes are launched through the recipe system, not as custom slash commands inside an existing chat.
 
 ## Existing Directory Case
 
@@ -82,6 +100,8 @@ So after the installer runs, use:
 /plugin install soho@soho-dev
 ```
 
+If Soho does not appear in Claude Code before those commands, that is expected. The installer creates the local marketplace path; Claude Code still has to add that marketplace and install from it.
+
 If you are actively developing Soho, you can also test it directly with:
 
 ```bash
@@ -99,6 +119,8 @@ Codex skill discovery works well with a namespaced skills symlink:
 ```
 
 This is the same general pattern used by Superpowers for Codex.
+
+Codex discovers Soho as skills after restart. This does not imply Soho will appear in a separate public marketplace or generic local-plugin UI.
 
 ## Cursor
 

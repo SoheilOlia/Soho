@@ -6,7 +6,7 @@
 
 **Architecture:** Split the system into core recipe, host plugin manifests, methodology skills, orchestration skills, role definitions, schemas, validation scripts, and repository tests.
 
-**Tech Stack:** Markdown, JSON, YAML, Bash, Python 3, PyYAML, unittest
+**Tech Stack:** Markdown, JSON, YAML, Bash, Python 3, unittest
 
 ---
 
@@ -18,7 +18,7 @@
 
 - [ ] Write the focused repository layout.
 - [ ] Replace the monolithic README story with a layered product description.
-- [ ] Keep Goose `/soho` as the primary recipe entrypoint.
+- [ ] Keep Goose `soho` as the primary recipe entrypoint, opened with `goose recipe open soho`.
 
 ### Task 2: Add host adapter surfaces
 

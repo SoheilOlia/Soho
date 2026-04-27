@@ -29,22 +29,28 @@ Soho global install complete.
 Installed:
   Goose recipes -> ${GOOSE_RECIPE_DIR}
   Codex skills -> ${CODEX_SKILLS_DIR}/soho
-  Claude marketplace -> ${CLAUDE_MARKETPLACES_DIR}/soho-dev
-  Cursor local plugin -> ${CURSOR_LOCAL_PLUGINS_DIR}/soho
+  Claude local marketplace path -> ${CLAUDE_MARKETPLACES_DIR}/soho-dev
+  Cursor local plugin path -> ${CURSOR_LOCAL_PLUGINS_DIR}/soho
 
 Next steps:
   Goose:
-    restart Goose and run /soho
+    restart Goose, then open the recipe:
+      goose recipe open soho
+    Note: Goose recipes do not appear as slash commands in an existing chat.
 
   Codex:
-    restart Codex so it re-discovers ~/.agents/skills
+    restart Codex so it re-discovers ~/.agents/skills.
+    Soho appears as skills, not as a public marketplace listing.
 
   Claude Code:
     run:
       /plugin marketplace add ${CLAUDE_MARKETPLACES_DIR}/soho-dev
       /plugin install soho@soho-dev
+    The installer creates a local marketplace path; Claude Code still requires
+    the two /plugin commands above.
 
   Cursor:
     restart Cursor and verify the local plugin at:
       ${CURSOR_LOCAL_PLUGINS_DIR}/soho
+    Cursor local plugin discovery is host-version-dependent.
 EOF

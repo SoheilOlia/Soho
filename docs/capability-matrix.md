@@ -2,10 +2,10 @@
 
 | Capability | Status | Notes |
 |---|---|---|
-| Goose `/soho` entrypoint | Runtime-backed | Installed by `install.sh` into Goose recipes |
-| Codex plugin metadata | Runtime-backed | Present in `.codex-plugin/plugin.json` |
-| Claude plugin metadata | Runtime-backed | Present in `.claude-plugin/plugin.json` |
-| Cursor plugin metadata | Runtime-backed | Present in `.cursor-plugin/plugin.json` |
+| Goose recipe entrypoint | Runtime-backed | Installed by `install.sh` into Goose recipes and opened with `goose recipe open soho`; it is not a slash command inside an existing chat |
+| Codex skills install | Runtime-backed | Installed as `~/.agents/skills/soho`; public marketplace visibility is not claimed |
+| Claude local marketplace metadata | Runtime-backed | Present in `.claude-plugin/plugin.json`; host still requires `/plugin marketplace add` and `/plugin install` |
+| Cursor local plugin metadata | Host-dependent | Present in `.cursor-plugin/plugin.json`; discovery depends on Cursor's local plugin support/version |
 | Methodology skills | Prompt-backed | Real files in `skills/`, enforced by host behavior and agent discipline |
 | Role catalog | Prompt-backed | Real YAML definitions in `roles/`, used to structure orchestration |
 | Swarm topology choice | Prompt-backed | Real skill guidance and role contracts |

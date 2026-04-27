@@ -7,8 +7,8 @@ SOHO is an opinionated agent engineering system that combines:
 
 This repository is not a single prompt pretending to be a platform. It is a layered package with:
 
-- a **Goose recipe** for `/soho`
-- **Codex / Claude / Cursor plugin metadata**
+- a **Goose recipe** opened through Goose's recipe system
+- **Codex / Claude / Cursor adapter metadata**
 - a **Soho skill library**
 - a **role catalog** for orchestrated work
 - **schemas** for receipts and role definitions
@@ -20,8 +20,8 @@ Public install and validation run on stock Python 3. No separate `PyYAML` instal
 
 Soho is the product surface. It is meant to feel like one thing:
 
-- `/soho` in Goose
-- the `soho` plugin in Codex / Claude / Cursor
+- the `soho` recipe in Goose
+- Soho skills or plugin adapters in Codex / Claude / Cursor, depending on host support
 - a disciplined, evidence-first workflow across solo and multi-agent work
 
 Internally, Soho is split into layers so it stays honest:
@@ -77,6 +77,8 @@ The bootstrap script then runs `scripts/install-global.sh`, which wires:
 
 It then prints the exact host-specific follow-up commands where the host requires one.
 
+Soho is not published to any public host marketplace yet. The installer wires local files on your machine. If a host has a separate marketplace UI, do not expect Soho to appear there until you add the local marketplace or the host re-scans local plugin paths.
+
 ### Goose
 
 ```bash
@@ -90,6 +92,14 @@ This validates the repo and installs:
 
 to `~/.config/goose/recipes/`.
 
+Open it with Goose's recipe system:
+
+```bash
+goose recipe open soho
+```
+
+Goose recipes are not slash commands inside an existing chat. If the Goose command palette only shows built-in commands such as `clear`, `compact`, and `prompt`, that does not mean the recipe failed to install.
+
 ### Codex
 
 Codex has a stable machine-global skill discovery path. Soho installs there as:
@@ -99,6 +109,8 @@ Codex has a stable machine-global skill discovery path. Soho installs there as:
 ```
 
 Then restart Codex and invoke Soho skills by name.
+
+This is a skills install, not a public Codex marketplace install.
 
 ### Claude Code
 
@@ -110,6 +122,8 @@ Soho ships a local marketplace at [`.claude-plugin/marketplace.json`](.claude-pl
 ```
 
 That is the official Claude Code path for a local plugin marketplace.
+
+The installer only creates the local marketplace directory. Claude Code does not install the plugin until you run the two `/plugin` commands.
 
 ### Cursor
 
@@ -137,10 +151,10 @@ Or rerun the bootstrap command; it handles both clone and update.
 
 ### Goose
 
-Start a Goose session and run:
+Open Soho as a Goose recipe:
 
-```text
-/soho
+```bash
+goose recipe open soho
 ```
 
 ### Skill-first hosts

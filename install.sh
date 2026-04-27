@@ -20,6 +20,7 @@ fi
 echo "Installed Goose recipe files to ${RECIPE_DIR}"
 echo
 echo "Next steps:"
-echo "  1. Start Goose and run /soho"
+echo "  1. Start Goose and open Soho with: goose recipe open soho"
+echo "     Note: Goose recipes do not appear as slash commands in an existing chat."
 echo "  2. For Codex / Claude / Cursor, use the local plugin manifests in this repo"
 echo "  3. Read docs/capability-matrix.md before relying on host-dependent swarm behavior"

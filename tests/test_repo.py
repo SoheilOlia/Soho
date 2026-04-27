@@ -92,6 +92,22 @@ class RepoStructureTests(unittest.TestCase):
             self.assertTrue((cursor_dir / "soho").is_symlink())
             self.assertEqual((cursor_dir / "soho").resolve(), REPO_ROOT.resolve())
 
+    def test_goose_docs_do_not_claim_slash_command_install(self):
+        checked_files = (
+            REPO_ROOT / "README.md",
+            REPO_ROOT / "docs" / "install.md",
+            REPO_ROOT / "docs" / "capability-matrix.md",
+            REPO_ROOT / "install.sh",
+            REPO_ROOT / "scripts" / "install-global.sh",
+        )
+        for path in checked_files:
+            text = path.read_text()
+            self.assertNotIn("run /soho", text, path)
+            self.assertNotIn("Goose `/soho`", text, path)
+
+        self.assertIn("goose recipe open soho", (REPO_ROOT / "README.md").read_text())
+        self.assertIn("goose recipe open soho", (REPO_ROOT / "docs" / "install.md").read_text())
+
     def test_bootstrap_script_clones_then_updates(self):
         with tempfile.TemporaryDirectory() as temp_root:
             remote_source = Path(temp_root) / "remote-source"
