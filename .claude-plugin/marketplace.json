@@ -1,8 +1,11 @@
 {
   "name": "soho-dev",
-  "description": "Development marketplace for the Soho methodology and orchestration system",
   "owner": {
     "name": "Soheil Olia"
+  },
+  "metadata": {
+    "description": "Development marketplace for the Soho methodology and orchestration system",
+    "version": "1.0.0"
   },
   "plugins": [
     {

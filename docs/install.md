@@ -44,7 +44,7 @@ git pull --ff-only
 |---|---|---|
 | Goose | `~/.config/goose/recipes`, opened with `goose recipe open soho` | verified recipe install |
 | Codex | `~/.agents/skills/soho -> repo/skills` | verified |
-| Claude Code | local marketplace at `~/.claude/plugins/marketplaces/soho-dev` plus `/plugin install soho@soho-dev` | verified path, manual install command still required |
+| Claude Code | local marketplace at `~/.claude/plugins/marketplaces/soho-dev` plus `claude plugin install soho@soho-dev` | verified path, manual install command still required |
 | Cursor | `~/.cursor/plugins/local/soho` | best-effort local plugin path on this machine |
 
 Soho is not currently published to a public marketplace. These are local installs. Marketplace UIs will not show Soho unless the host explicitly supports adding local marketplaces or scanning local plugin paths.
@@ -87,20 +87,22 @@ or rerun the bootstrap command, which handles this automatically.
 
 ## Claude Code
 
-The official Claude Code marketplace docs support:
+Claude Code supports plugin management through the `claude plugin` CLI:
 
 - local marketplace directories
-- `/plugin marketplace add <path>`
-- `/plugin install plugin-name@marketplace-name`
+- `claude plugin marketplace add <path>`
+- `claude plugin install plugin-name@marketplace-name`
 
 So after the installer runs, use:
 
-```text
-/plugin marketplace add ~/.claude/plugins/marketplaces/soho-dev
-/plugin install soho@soho-dev
+```bash
+claude plugin marketplace add ~/.claude/plugins/marketplaces/soho-dev
+claude plugin install soho@soho-dev
 ```
 
 If Soho does not appear in Claude Code before those commands, that is expected. The installer creates the local marketplace path; Claude Code still has to add that marketplace and install from it.
+
+Some Claude surfaces do not expose the interactive `/plugin` slash command. Use the CLI form above when `/plugin` is unavailable.
 
 If you are actively developing Soho, you can also test it directly with:
 

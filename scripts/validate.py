@@ -82,6 +82,29 @@ def validate_plugin_manifest(relative_path: str, errors):
             errors.append(f"{relative_path} missing key: {key}")
 
 
+def validate_claude_marketplace_manifest(errors):
+    relative_path = ".claude-plugin/marketplace.json"
+    data = load_json(validate_file_exists(relative_path, errors))
+    if "description" in data:
+        errors.append(f"{relative_path} must put description under metadata.description")
+    for key in ("name", "owner", "metadata", "plugins"):
+        if key not in data:
+            errors.append(f"{relative_path} missing key: {key}")
+    metadata = data.get("metadata", {})
+    if not isinstance(metadata, dict) or "description" not in metadata:
+        errors.append(f"{relative_path} missing metadata.description")
+    plugins = data.get("plugins", [])
+    if not isinstance(plugins, list) or not plugins:
+        errors.append(f"{relative_path} must define at least one plugin")
+    for index, plugin in enumerate(plugins):
+        if not isinstance(plugin, dict):
+            errors.append(f"{relative_path} plugins[{index}] must be an object")
+            continue
+        for key in ("name", "description", "version", "source"):
+            if key not in plugin:
+                errors.append(f"{relative_path} plugins[{index}] missing key: {key}")
+
+
 def validate_skill_files(errors):
     skill_dir = REPO_ROOT / "skills"
     found = {path.parent.name for path in skill_dir.glob("*/SKILL.md")}
@@ -177,6 +200,7 @@ def run_validation():
     validate_plugin_manifest(".codex-plugin/plugin.json", errors)
     validate_plugin_manifest(".claude-plugin/plugin.json", errors)
     validate_plugin_manifest(".cursor-plugin/plugin.json", errors)
+    validate_claude_marketplace_manifest(errors)
     validate_skill_files(errors)
     validate_roles(errors)
     validate_recipe(errors)

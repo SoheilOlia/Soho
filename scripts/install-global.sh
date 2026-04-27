@@ -44,10 +44,10 @@ Next steps:
 
   Claude Code:
     run:
-      /plugin marketplace add ${CLAUDE_MARKETPLACES_DIR}/soho-dev
-      /plugin install soho@soho-dev
+      claude plugin marketplace add ${CLAUDE_MARKETPLACES_DIR}/soho-dev
+      claude plugin install soho@soho-dev
     The installer creates a local marketplace path; Claude Code still requires
-    the two /plugin commands above.
+    the two CLI commands above.
 
   Cursor:
     restart Cursor and verify the local plugin at:

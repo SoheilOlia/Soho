@@ -116,14 +116,14 @@ This is a skills install, not a public Codex marketplace install.
 
 Soho ships a local marketplace at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json). After `./scripts/install-global.sh`, run:
 
-```text
-/plugin marketplace add ~/.claude/plugins/marketplaces/soho-dev
-/plugin install soho@soho-dev
+```bash
+claude plugin marketplace add ~/.claude/plugins/marketplaces/soho-dev
+claude plugin install soho@soho-dev
 ```
 
 That is the official Claude Code path for a local plugin marketplace.
 
-The installer only creates the local marketplace directory. Claude Code does not install the plugin until you run the two `/plugin` commands.
+The installer only creates the local marketplace directory. Claude Code does not install the plugin until you run the two `claude plugin ...` commands. Some Claude surfaces do not expose the interactive `/plugin` slash command; the CLI command is the more reliable install path.
 
 ### Cursor
 
