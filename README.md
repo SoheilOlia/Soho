@@ -14,6 +14,8 @@ This repository is not a single prompt pretending to be a platform. It is a laye
 - **schemas** for receipts and role definitions
 - a **validation suite** that checks the repo’s own integrity
 
+Public install and validation run on stock Python 3. No separate `PyYAML` install is required.
+
 ## What Soho Is
 
 Soho is the product surface. It is meant to feel like one thing:

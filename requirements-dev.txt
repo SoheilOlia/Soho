@@ -1,1 +1,2 @@
-PyYAML>=6.0,<7
+# No third-party Python packages are required for install or validation.
+# Repository checks run on stock Python 3.

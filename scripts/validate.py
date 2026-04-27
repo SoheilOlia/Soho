@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import json
+import re
 import sys
 from pathlib import Path
-
-import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -44,17 +43,29 @@ def load_json(path: Path):
         return json.load(handle)
 
 
-def load_yaml(path: Path):
-    with path.open() as handle:
-        return yaml.safe_load(handle)
+def read_text(path: Path):
+    return path.read_text()
 
 
 def load_frontmatter(path: Path):
-    text = path.read_text()
+    text = read_text(path)
     if not text.startswith("---\n"):
         raise ValueError(f"{path} is missing frontmatter")
     _, frontmatter, _ = text.split("---", 2)
-    return yaml.safe_load(frontmatter)
+    return {
+        match.group("key"): match.group("value").strip()
+        for match in re.finditer(r"^(?P<key>[A-Za-z0-9_-]+):\s*(?P<value>.+?)\s*$", frontmatter, re.MULTILINE)
+    }
+
+
+def has_top_level_key(text: str, key: str):
+    pattern = rf"^{re.escape(key)}:\s*"
+    return re.search(pattern, text, re.MULTILINE) is not None
+
+
+def has_yaml_key(text: str, key: str):
+    pattern = rf"^{re.escape(key)}:\s*"
+    return re.search(pattern, text, re.MULTILINE) is not None
 
 
 def validate_file_exists(relative_path: str, errors):
@@ -91,16 +102,16 @@ def validate_roles(errors):
     for name in sorted(missing):
         errors.append(f"Missing role: {name}")
     for role_path in role_dir.glob("*.yaml"):
-        role = load_yaml(role_path)
+        role_text = read_text(role_path)
         for key in ("name", "version", "purpose", "when_to_use", "capabilities", "deliverables"):
-            if key not in role:
+            if not has_yaml_key(role_text, key):
                 errors.append(f"{role_path.relative_to(REPO_ROOT)} missing key: {key}")
 
 
 def validate_recipe(errors):
-    recipe = load_yaml(validate_file_exists("soho.yaml", errors))
+    recipe_text = read_text(validate_file_exists("soho.yaml", errors))
     for key in ("version", "title", "description", "instructions"):
-        if key not in recipe:
+        if not has_top_level_key(recipe_text, key):
             errors.append(f"soho.yaml missing key: {key}")
     sub_recipes = [
         "architecture-design.yaml",

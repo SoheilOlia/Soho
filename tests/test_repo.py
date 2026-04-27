@@ -6,8 +6,6 @@ import tempfile
 import unittest
 from pathlib import Path
 
-import yaml
-
 from scripts.validate import REQUIRED_ROLES, REQUIRED_SKILLS, REPO_ROOT, run_validation
 
 
@@ -31,8 +29,7 @@ class RepoStructureTests(unittest.TestCase):
             self.assertIn(field, required)
 
     def test_recipe_references_real_sub_recipes(self):
-        recipe = yaml.safe_load((REPO_ROOT / "soho.yaml").read_text())
-        instructions = recipe["instructions"]
+        recipe_text = (REPO_ROOT / "soho.yaml").read_text()
         for name in (
             "architecture-design.yaml",
             "code-review.yaml",
@@ -47,7 +44,7 @@ class RepoStructureTests(unittest.TestCase):
             "swarm-orchestration.yaml",
             "test-suite.yaml",
         ):
-            self.assertIn(name, instructions)
+            self.assertIn(name, recipe_text)
             self.assertTrue((REPO_ROOT / "sub-recipes" / name).exists())
 
     def test_install_script_installs_goose_recipe_files(self):
