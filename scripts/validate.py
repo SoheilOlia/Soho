@@ -133,6 +133,7 @@ def validate_schemas(errors):
 def validate_docs(errors):
     for doc in (
         "docs/architecture.md",
+        "docs/install.md",
         "docs/capability-matrix.md",
         "docs/testing.md",
         "docs/specs/2026-04-27-soho-platform-design.md",
@@ -150,6 +151,15 @@ def validate_commands(errors):
         validate_file_exists(command, errors)
 
 
+def validate_scripts(errors):
+    for script in (
+        "install.sh",
+        "scripts/install-global.sh",
+        "scripts/validate.py",
+    ):
+        validate_file_exists(script, errors)
+
+
 def run_validation():
     errors = []
     validate_plugin_manifest(".codex-plugin/plugin.json", errors)
@@ -161,6 +171,7 @@ def run_validation():
     validate_schemas(errors)
     validate_docs(errors)
     validate_commands(errors)
+    validate_scripts(errors)
     if errors:
         for error in errors:
             print(f"ERROR: {error}")

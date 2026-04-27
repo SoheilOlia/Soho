@@ -64,6 +64,36 @@ class RepoStructureTests(unittest.TestCase):
             self.assertTrue((recipe_root / "soho.yaml").exists())
             self.assertTrue((recipe_root / "sub-recipes" / "swarm-orchestration.yaml").exists())
 
+    def test_global_install_script_wires_all_supported_paths(self):
+        with tempfile.TemporaryDirectory() as temp_root:
+            goose_dir = Path(temp_root) / "goose" / "recipes"
+            codex_dir = Path(temp_root) / "agents" / "skills"
+            claude_dir = Path(temp_root) / "claude" / "plugins" / "marketplaces"
+            cursor_dir = Path(temp_root) / "cursor" / "plugins" / "local"
+            subprocess.run(
+                ["bash", "scripts/install-global.sh"],
+                cwd=REPO_ROOT,
+                env={
+                    **os.environ,
+                    "GOOSE_RECIPE_DIR": str(goose_dir),
+                    "CODEX_SKILLS_DIR": str(codex_dir),
+                    "CLAUDE_MARKETPLACES_DIR": str(claude_dir),
+                    "CURSOR_LOCAL_PLUGINS_DIR": str(cursor_dir),
+                },
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            self.assertTrue((goose_dir / "soho.yaml").exists())
+            self.assertTrue((goose_dir / "sub-recipes" / "solo-execution.yaml").exists())
+            self.assertTrue((codex_dir / "soho").is_symlink())
+            self.assertEqual((codex_dir / "soho").resolve(), (REPO_ROOT / "skills").resolve())
+            self.assertTrue((claude_dir / "soho-dev").is_symlink())
+            self.assertEqual((claude_dir / "soho-dev").resolve(), REPO_ROOT.resolve())
+            self.assertTrue((cursor_dir / "soho").is_symlink())
+            self.assertEqual((cursor_dir / "soho").resolve(), REPO_ROOT.resolve())
+
 
 if __name__ == "__main__":
     unittest.main()

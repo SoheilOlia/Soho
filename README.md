@@ -43,11 +43,30 @@ Soho does not fake receipts. If the host cannot spawn agents, Soho falls back to
 
 ## Install
 
+The simplest durable setup is:
+
+1. clone Soho once to a stable path such as `~/agent-plugins/soho`
+2. run the global installer
+3. restart the hosts that use file-based discovery
+
+```bash
+git clone https://github.com/SoheilOlia/Soho.git ~/agent-plugins/soho
+cd ~/agent-plugins/soho
+./scripts/install-global.sh
+```
+
+That script currently wires:
+
+- Goose recipes into `~/.config/goose/recipes`
+- Codex skills into `~/.agents/skills/soho`
+- a Claude Code local marketplace into `~/.claude/plugins/marketplaces/soho-dev`
+- a Cursor local plugin directory into `~/.cursor/plugins/local/soho`
+
+It then prints the exact host-specific follow-up commands where the host requires one.
+
 ### Goose
 
 ```bash
-git clone https://github.com/SoheilOlia/Soho.git
-cd Soho
 ./install.sh
 ```
 
@@ -58,15 +77,36 @@ This validates the repo and installs:
 
 to `~/.config/goose/recipes/`.
 
-### Codex / Claude / Cursor
+### Codex
 
-Use the local plugin manifests in:
+Codex has a stable machine-global skill discovery path. Soho installs there as:
 
-- [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json)
-- [`.claude-plugin/plugin.json`](.claude-plugin/plugin.json)
-- [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json)
+```text
+~/.agents/skills/soho -> /path/to/Soho/skills
+```
 
-and point your host at this repository as a local plugin / skills source.
+Then restart Codex and invoke Soho skills by name.
+
+### Claude Code
+
+Soho ships a local marketplace at [`.claude-plugin/marketplace.json`](.claude-plugin/marketplace.json). After `./scripts/install-global.sh`, run:
+
+```text
+/plugin marketplace add ~/.claude/plugins/marketplaces/soho-dev
+/plugin install soho@soho-dev
+```
+
+That is the official Claude Code path for a local plugin marketplace.
+
+### Cursor
+
+Soho is also copied into Cursor’s local plugin root:
+
+```text
+~/.cursor/plugins/local/soho
+```
+
+This is the best machine-global local-plugin path I could verify on this machine. Restart Cursor after install and verify the plugin is discovered. See [docs/install.md](docs/install.md) for the current confidence level and verification notes.
 
 ## Use
 
@@ -133,6 +173,7 @@ This performs:
 ## Documentation
 
 - [docs/architecture.md](docs/architecture.md)
+- [docs/install.md](docs/install.md)
 - [docs/capability-matrix.md](docs/capability-matrix.md)
 - [docs/testing.md](docs/testing.md)
 - [docs/specs/2026-04-27-soho-platform-design.md](docs/specs/2026-04-27-soho-platform-design.md)

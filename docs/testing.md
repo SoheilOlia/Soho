@@ -11,6 +11,7 @@ It checks:
 - required roles exist and match the role schema shape
 - the Goose recipe references real sub-recipes
 - the receipt schema contains the required fields
+- the global installer writes the expected symlinks and recipe files
 
 ## Commands
 
