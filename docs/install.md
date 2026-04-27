@@ -7,16 +7,34 @@ This document separates what is verified from what is merely likely.
 Use one stable clone path so all hosts point to the same repository:
 
 ```bash
-git clone https://github.com/SoheilOlia/Soho.git ~/agent-plugins/soho
-cd ~/agent-plugins/soho
-./scripts/install-global.sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SoheilOlia/Soho/main/scripts/bootstrap.sh)"
 ```
 
-Update later with:
+The bootstrap script:
+
+1. clones Soho if the target directory does not exist
+2. fast-forwards the existing clone if it does exist
+3. runs `scripts/install-global.sh`
+
+By default it uses:
+
+```text
+SOHO_REPO_URL=https://github.com/SoheilOlia/Soho.git
+SOHO_INSTALL_DIR=~/agent-plugins/soho
+```
+
+Override example:
+
+```bash
+SOHO_INSTALL_DIR=~/tools/soho \
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SoheilOlia/Soho/main/scripts/bootstrap.sh)"
+```
+
+Manual update later with:
 
 ```bash
 cd ~/agent-plugins/soho
-git pull
+git pull --ff-only
 ./scripts/install-global.sh
 ```
 
@@ -36,6 +54,18 @@ git pull
 3. installs a Codex global skills symlink
 4. installs a Claude Code local marketplace symlink
 5. installs a Cursor local plugin symlink
+
+## Existing Directory Case
+
+If `~/agent-plugins/soho` already exists, do not run `git clone` again in that folder. Either:
+
+```bash
+cd ~/agent-plugins/soho
+git pull --ff-only
+./scripts/install-global.sh
+```
+
+or rerun the bootstrap command, which handles this automatically.
 
 ## Claude Code
 

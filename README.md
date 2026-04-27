@@ -45,17 +45,28 @@ Soho does not fake receipts. If the host cannot spawn agents, Soho falls back to
 
 The simplest durable setup is:
 
-1. clone Soho once to a stable path such as `~/agent-plugins/soho`
-2. run the global installer
-3. restart the hosts that use file-based discovery
+1. run the bootstrap script
+2. let it clone or update Soho at a stable path
+3. let it run the global installer
+4. restart the hosts that use file-based discovery
 
 ```bash
-git clone https://github.com/SoheilOlia/Soho.git ~/agent-plugins/soho
-cd ~/agent-plugins/soho
-./scripts/install-global.sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SoheilOlia/Soho/main/scripts/bootstrap.sh)"
 ```
 
-That script currently wires:
+By default it uses:
+
+- repo URL: `https://github.com/SoheilOlia/Soho.git`
+- install dir: `~/agent-plugins/soho`
+
+You can override the install directory:
+
+```bash
+SOHO_INSTALL_DIR=~/tools/soho \
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/SoheilOlia/Soho/main/scripts/bootstrap.sh)"
+```
+
+The bootstrap script then runs `scripts/install-global.sh`, which wires:
 
 - Goose recipes into `~/.config/goose/recipes`
 - Codex skills into `~/.agents/skills/soho`
@@ -107,6 +118,18 @@ Soho is also copied into Cursor’s local plugin root:
 ```
 
 This is the best machine-global local-plugin path I could verify on this machine. Restart Cursor after install and verify the plugin is discovered. See [docs/install.md](docs/install.md) for the current confidence level and verification notes.
+
+## Updating
+
+If Soho is already cloned locally, update it with:
+
+```bash
+cd ~/agent-plugins/soho
+git pull --ff-only
+./scripts/install-global.sh
+```
+
+Or rerun the bootstrap command; it handles both clone and update.
 
 ## Use
 

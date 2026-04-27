@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -93,6 +94,77 @@ class RepoStructureTests(unittest.TestCase):
             self.assertEqual((claude_dir / "soho-dev").resolve(), REPO_ROOT.resolve())
             self.assertTrue((cursor_dir / "soho").is_symlink())
             self.assertEqual((cursor_dir / "soho").resolve(), REPO_ROOT.resolve())
+
+    def test_bootstrap_script_clones_then_updates(self):
+        with tempfile.TemporaryDirectory() as temp_root:
+            remote_source = Path(temp_root) / "remote-source"
+            shutil.copytree(
+                REPO_ROOT,
+                remote_source,
+                ignore=shutil.ignore_patterns(".git", "__pycache__", ".pytest_cache"),
+            )
+            subprocess.run(
+                ["git", "init", "-b", "main"],
+                cwd=remote_source,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            subprocess.run(
+                ["git", "add", "."],
+                cwd=remote_source,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            subprocess.run(
+                ["git", "-c", "user.name=Test User", "-c", "user.email=test@example.com", "commit", "-m", "initial"],
+                cwd=remote_source,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+
+            install_dir = Path(temp_root) / "agent-plugins" / "soho"
+            goose_dir = Path(temp_root) / "goose" / "recipes"
+            codex_dir = Path(temp_root) / "agents" / "skills"
+            claude_dir = Path(temp_root) / "claude" / "plugins" / "marketplaces"
+            cursor_dir = Path(temp_root) / "cursor" / "plugins" / "local"
+            env = {
+                **os.environ,
+                "SOHO_REPO_URL": str(remote_source),
+                "SOHO_INSTALL_DIR": str(install_dir),
+                "GOOSE_RECIPE_DIR": str(goose_dir),
+                "CODEX_SKILLS_DIR": str(codex_dir),
+                "CLAUDE_MARKETPLACES_DIR": str(claude_dir),
+                "CURSOR_LOCAL_PLUGINS_DIR": str(cursor_dir),
+            }
+
+            subprocess.run(
+                ["bash", str(REPO_ROOT / "scripts" / "bootstrap.sh")],
+                cwd=REPO_ROOT,
+                env=env,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            self.assertTrue((install_dir / "scripts" / "install-global.sh").exists())
+            self.assertTrue((goose_dir / "soho.yaml").exists())
+
+            subprocess.run(
+                ["bash", str(REPO_ROOT / "scripts" / "bootstrap.sh")],
+                cwd=REPO_ROOT,
+                env=env,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            self.assertTrue((codex_dir / "soho").is_symlink())
 
 
 if __name__ == "__main__":

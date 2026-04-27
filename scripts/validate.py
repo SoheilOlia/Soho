@@ -154,6 +154,7 @@ def validate_commands(errors):
 def validate_scripts(errors):
     for script in (
         "install.sh",
+        "scripts/bootstrap.sh",
         "scripts/install-global.sh",
         "scripts/validate.py",
     ):

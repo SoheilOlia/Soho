@@ -12,6 +12,7 @@ It checks:
 - the Goose recipe references real sub-recipes
 - the receipt schema contains the required fields
 - the global installer writes the expected symlinks and recipe files
+- the bootstrap script handles both fresh clone and existing-clone update flows
 
 ## Commands
 
