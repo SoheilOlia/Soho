@@ -50,7 +50,9 @@ Next steps:
     the two CLI commands above.
 
   Cursor:
-    restart Cursor and verify the local plugin at:
+    best-effort local plugin metadata was linked at:
       ${CURSOR_LOCAL_PLUGINS_DIR}/soho
-    Cursor local plugin discovery is host-version-dependent.
+    For Cursor slash commands, install per project:
+      ${REPO_DIR}/scripts/install-cursor-project.sh /path/to/project
+    Cursor discovers slash commands from project .cursor/commands/*.md.
 EOF

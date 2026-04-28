@@ -192,6 +192,7 @@ def validate_scripts(errors):
         "install.sh",
         "scripts/bootstrap.sh",
         "scripts/build-dmg.sh",
+        "scripts/install-cursor-project.sh",
         "scripts/install-global.sh",
         "scripts/validate.py",
     ):

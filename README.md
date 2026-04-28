@@ -73,7 +73,7 @@ The bootstrap script then runs `scripts/install-global.sh`, which wires:
 - Goose recipes into `~/.config/goose/recipes`
 - Codex skills into `~/.agents/skills/soho`
 - a Claude Code local marketplace into `~/.claude/plugins/marketplaces/soho-dev`
-- a Cursor local plugin directory into `~/.cursor/plugins/local/soho`
+- best-effort Cursor local plugin metadata into `~/.cursor/plugins/local/soho`
 
 It then prints the exact host-specific follow-up commands where the host requires one.
 
@@ -127,13 +127,15 @@ The installer only creates the local marketplace directory. Claude Code does not
 
 ### Cursor
 
-Soho is also copied into Cursor’s local plugin root:
+Cursor slash commands are project-local. Install Soho commands into a project with:
 
-```text
-~/.cursor/plugins/local/soho
+```bash
+~/agent-plugins/soho/scripts/install-cursor-project.sh /path/to/project
 ```
 
-This is the best machine-global local-plugin path I could verify on this machine. Restart Cursor after install and verify the plugin is discovered. See [docs/install.md](docs/install.md) for the current confidence level and verification notes.
+Then open or reload that project and type `/soho` in Cursor chat.
+
+The global installer also links best-effort Cursor plugin metadata at `~/.cursor/plugins/local/soho`, but Cursor's documented reusable chat command path is `.cursor/commands/*.md` inside each project. See [docs/install.md](docs/install.md).
 
 ## Updating
 

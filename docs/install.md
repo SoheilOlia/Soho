@@ -45,7 +45,7 @@ git pull --ff-only
 | Goose | `~/.config/goose/recipes`, opened with `goose recipe open soho` | verified recipe install |
 | Codex | `~/.agents/skills/soho -> repo/skills` | verified |
 | Claude Code | local marketplace at `~/.claude/plugins/marketplaces/soho-dev` plus `claude plugin install soho@soho-dev` | verified path, manual install command still required |
-| Cursor | `~/.cursor/plugins/local/soho` | best-effort local plugin path on this machine |
+| Cursor | project `.cursor/commands/*.md` via `scripts/install-cursor-project.sh` | verified command-file install; project reload may be required |
 
 Soho is not currently published to a public marketplace. These are local installs. Marketplace UIs will not show Soho unless the host explicitly supports adding local marketplaces or scanning local plugin paths.
 
@@ -55,7 +55,7 @@ Soho is not currently published to a public marketplace. These are local install
 2. installs Goose recipes
 3. installs a Codex global skills symlink
 4. installs a Claude Code local marketplace symlink
-5. installs a Cursor local plugin symlink
+5. installs a best-effort Cursor local plugin symlink
 
 ## Goose
 
@@ -138,19 +138,29 @@ Codex discovers Soho as skills after restart. This does not imply Soho will appe
 
 ## Cursor
 
-Cursor on this machine has a local plugin directory at:
+Cursor's documented reusable chat commands are Markdown files stored in a project's `.cursor/commands` directory. Install Soho commands into a project with:
 
-```text
-~/.cursor/plugins/local
+```bash
+~/agent-plugins/soho/scripts/install-cursor-project.sh /path/to/project
 ```
 
-The installer places Soho at:
+For the current directory:
 
-```text
-~/.cursor/plugins/local/soho
+```bash
+~/agent-plugins/soho/scripts/install-cursor-project.sh .
 ```
 
-Confidence is lower here than Goose, Codex, and Claude Code because I do not yet have a strong official Cursor plugin-install reference comparable to Claude’s marketplace docs.
+This creates:
+
+```text
+.cursor/commands/soho.md
+.cursor/commands/soho-plan.md
+.cursor/commands/soho-swarm.md
+```
+
+Then open or reload the project and type `/soho` in Cursor chat.
+
+The global installer still links best-effort Cursor plugin metadata at `~/.cursor/plugins/local/soho`, but do not rely on that path for slash-command discovery. Cursor slash commands are project-local.
 
 ## Outside Block
 

@@ -56,6 +56,12 @@ SOHO_INSTALL_DIR=~/tools/soho /Volumes/Soho*/Install\ Soho.command
 4. attempts Claude Code plugin install through the `claude plugin` CLI if Claude Code is available
 5. prints the Goose command: `goose recipe open soho`
 
+Cursor slash commands are project-local. After installing from the DMG, run this inside each project where you want `/soho`:
+
+```bash
+~/agent-plugins/soho/scripts/install-cursor-project.sh .
+```
+
 ## Signing And Notarization
 
 The local DMG produced by `scripts/build-dmg.sh` is unsigned and not notarized. That is acceptable for local testing and private distribution, but a public release DMG should be signed and notarized before broad distribution.

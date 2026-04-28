@@ -92,6 +92,22 @@ class RepoStructureTests(unittest.TestCase):
             self.assertTrue((cursor_dir / "soho").is_symlink())
             self.assertEqual((cursor_dir / "soho").resolve(), REPO_ROOT.resolve())
 
+    def test_cursor_project_install_script_writes_project_commands(self):
+        with tempfile.TemporaryDirectory() as temp_project:
+            subprocess.run(
+                ["bash", "scripts/install-cursor-project.sh", temp_project],
+                cwd=REPO_ROOT,
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            commands_dir = Path(temp_project) / ".cursor" / "commands"
+            for name in ("soho.md", "soho-plan.md", "soho-swarm.md"):
+                installed = commands_dir / name
+                self.assertTrue(installed.exists())
+                self.assertEqual(installed.read_text(), (REPO_ROOT / "commands" / name).read_text())
+
     def test_goose_docs_do_not_claim_slash_command_install(self):
         checked_files = (
             REPO_ROOT / "README.md",
@@ -123,6 +139,13 @@ class RepoStructureTests(unittest.TestCase):
         install_text = (REPO_ROOT / "docs" / "install.md").read_text()
         self.assertIn("claude plugin marketplace add", install_text)
         self.assertIn("claude plugin install", install_text)
+
+    def test_cursor_docs_use_project_commands_not_global_plugin_claim(self):
+        install_text = (REPO_ROOT / "docs" / "install.md").read_text()
+        readme_text = (REPO_ROOT / "README.md").read_text()
+        self.assertIn("scripts/install-cursor-project.sh", install_text)
+        self.assertIn(".cursor/commands/soho.md", install_text)
+        self.assertIn("Cursor slash commands are project-local", readme_text)
 
     def test_dmg_packaging_script_is_executable_and_documented(self):
         script = REPO_ROOT / "scripts" / "build-dmg.sh"
