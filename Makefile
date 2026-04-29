@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: validate test check dmg
+.PHONY: validate test mirror-check check dmg
 
 validate:
 	$(PYTHON) scripts/validate.py
@@ -8,7 +8,10 @@ validate:
 test:
 	$(PYTHON) -m unittest discover -s tests -p 'test_*.py'
 
-check: validate test
+mirror-check:
+	scripts/check-skills-mirror.sh
+
+check: validate test mirror-check
 
 dmg:
 	scripts/build-dmg.sh

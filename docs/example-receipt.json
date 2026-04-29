@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-04-29T00:00:00Z",
+  "host": "codex",
+  "mode": "solo",
+  "runtime": "prompt-backed",
+  "task_summary": "Tightened Soho skill instructions and verified mirror parity.",
+  "evidence": [
+    "python3 scripts/validate.py",
+    "python3 -m unittest discover -s tests -p 'test_*.py'"
+  ],
+  "outputs": [
+    "Updated skills/using-soho/SKILL.md"
+  ],
+  "confidence": "high"
+}

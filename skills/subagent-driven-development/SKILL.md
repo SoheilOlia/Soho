@@ -7,6 +7,8 @@ description: Use when Soho should execute a plan through delegated tasks with ro
 
 Use this when the host supports delegation, or when a serial role-pass simulation is still useful.
 
+Use `orchestrating-swarms` first to decide whether delegation is justified and to set topology, roles, and write boundaries. This skill is for executing those bounded tasks and checking their outputs.
+
 ## Process
 
 1. Start from a written plan.

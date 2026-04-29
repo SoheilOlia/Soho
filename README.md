@@ -220,6 +220,7 @@ This performs:
 
 - structural validation with `scripts/validate.py`
 - repository tests in `tests/test_repo.py`
+- skills mirror check with `scripts/check-skills-mirror.sh` when `~/skills/soho/skills` or `SOHO_SKILLS_MIRROR_DIR` is available
 
 ## Documentation
 

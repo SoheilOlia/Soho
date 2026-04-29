@@ -7,6 +7,8 @@ description: Use when a task should be decomposed across multiple roles, with ex
 
 Use this when multiple roles materially improve quality, speed, or coverage.
 
+Use this skill to decompose, assign roles, choose boundaries, and define synthesis. Use `subagent-driven-development` only after this plan exists and bounded tasks are ready to execute.
+
 ## Preconditions
 
 - The task has separable concerns.
