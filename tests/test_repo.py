@@ -28,6 +28,15 @@ class RepoStructureTests(unittest.TestCase):
         for field in ("generated_at", "host", "mode", "runtime", "task_summary", "evidence", "outputs", "confidence"):
             self.assertIn(field, required)
 
+    def test_example_receipt_matches_schema_required_fields(self):
+        schema = json.loads((REPO_ROOT / "schemas" / "soho-receipt.schema.json").read_text())
+        receipt = json.loads((REPO_ROOT / "docs" / "example-receipt.json").read_text())
+        for field in schema["required"]:
+            self.assertIn(field, receipt)
+        self.assertIn(receipt["mode"], schema["properties"]["mode"]["enum"])
+        self.assertIn(receipt["runtime"], schema["properties"]["runtime"]["enum"])
+        self.assertIn(receipt["confidence"], schema["properties"]["confidence"]["enum"])
+
     def test_recipe_references_real_sub_recipes(self):
         recipe_text = (REPO_ROOT / "soho.yaml").read_text()
         for name in (
@@ -108,6 +117,41 @@ class RepoStructureTests(unittest.TestCase):
                 self.assertTrue(installed.exists())
                 self.assertEqual(installed.read_text(), (REPO_ROOT / "commands" / name).read_text())
 
+    def test_public_skill_cursor_commands_match_project_commands(self):
+        public_cursor_dir = REPO_ROOT / "skills" / "using-soho" / "cursor"
+        for name in ("soho.md", "soho-plan.md", "soho-swarm.md"):
+            self.assertTrue((public_cursor_dir / name).exists())
+            self.assertEqual((public_cursor_dir / name).read_text(), (REPO_ROOT / "commands" / name).read_text())
+
+    def test_mirror_check_script_can_validate_explicit_mirror(self):
+        with tempfile.TemporaryDirectory() as temp_root:
+            mirror = Path(temp_root) / "skills"
+            shutil.copytree(REPO_ROOT / "skills", mirror)
+            subprocess.run(
+                ["bash", "scripts/check-skills-mirror.sh"],
+                cwd=REPO_ROOT,
+                env={**os.environ, "SOHO_SKILLS_MIRROR_DIR": str(mirror)},
+                check=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+
+    def test_canonical_local_skills_mirror_matches_when_present(self):
+        mirror = Path.home() / "skills" / "soho" / "skills"
+        if not mirror.exists():
+            self.skipTest(f"canonical mirror not present: {mirror}")
+
+        subprocess.run(
+            ["bash", "scripts/check-skills-mirror.sh"],
+            cwd=REPO_ROOT,
+            env={**os.environ, "SOHO_SKILLS_MIRROR_DIR": str(mirror)},
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
     def test_goose_docs_do_not_claim_slash_command_install(self):
         checked_files = (
             REPO_ROOT / "README.md",
@@ -152,9 +196,14 @@ class RepoStructureTests(unittest.TestCase):
         self.assertTrue(script.exists())
         self.assertTrue(os.access(script, os.X_OK))
 
+        mirror_script = REPO_ROOT / "scripts" / "check-skills-mirror.sh"
+        self.assertTrue(mirror_script.exists())
+        self.assertTrue(os.access(mirror_script, os.X_OK))
+
         makefile_text = (REPO_ROOT / "Makefile").read_text()
         self.assertIn("dmg:", makefile_text)
         self.assertIn("scripts/build-dmg.sh", makefile_text)
+        self.assertIn("mirror-check:", makefile_text)
 
         packaging_text = (REPO_ROOT / "docs" / "packaging.md").read_text()
         self.assertIn("make dmg", packaging_text)

@@ -9,11 +9,12 @@ Use this when implementation spans more than a trivial edit.
 
 ## Plan Requirements
 
-- Save the plan to `docs/plans/`.
+- Save the plan to `$SOHO_DOCS_DIR/plans/` when set, otherwise `docs/plans/` in a real project.
 - Use exact file paths.
 - Break work into small executable steps.
 - Include testing and verification steps.
 - Avoid placeholders like `TODO`, `later`, or `add tests`.
+- If there is no safe project docs directory, keep the plan inline and say it was not written to disk.
 
 ## Minimum Structure
 
