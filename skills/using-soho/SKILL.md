@@ -23,7 +23,10 @@ Prefer `solo` unless `swarm` changes the quality or speed of the result. Do not 
 
 If the user asks for an outcome, proceed in the selected Soho mode without waiting for a second approval. If the user asks only for a review, recommendation, plan, or prompt, stay in that output mode.
 
-Respect explicit opt-outs: `no Soho`, `skip Soho`, `plain answer`, `no receipt`, `read-only`, `review-only`, `dry-run`, `plan-only`, `no edits`, `no commit`, or `no push`.
+Respect explicit opt-outs:
+
+- Skip Soho discipline: `no Soho`, `skip Soho`, `plain answer`, `no receipt`.
+- Stay read-only or constrained: `read-only`, `review-only`, `dry-run`, `plan-only`, `no edits`, `no commit`, `no push`.
 
 Confirm before high-blast-radius or externally visible actions: force-push, push to protected `main`, merge PRs, delete branches, delete files beyond a narrow task-scoped change, rewrite user-owned work, skip hooks with `--no-verify`, run `git reset --hard` or `git clean -fd`, rebase published history, run `rm -rf` outside the repo, mutate production data, kill processes you did not start, or send Slack/Linear/email messages.
 

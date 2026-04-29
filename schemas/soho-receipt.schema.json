@@ -17,7 +17,14 @@
       "type": "string"
     },
     "host": {
-      "type": "string"
+      "type": "string",
+      "enum": [
+        "amp",
+        "claude",
+        "codex",
+        "cursor",
+        "goose"
+      ]
     },
     "mode": {
       "type": "string",

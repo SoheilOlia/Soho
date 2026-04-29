@@ -33,6 +33,7 @@ class RepoStructureTests(unittest.TestCase):
         receipt = json.loads((REPO_ROOT / "docs" / "example-receipt.json").read_text())
         for field in schema["required"]:
             self.assertIn(field, receipt)
+        self.assertIn(receipt["host"], schema["properties"]["host"]["enum"])
         self.assertIn(receipt["mode"], schema["properties"]["mode"]["enum"])
         self.assertIn(receipt["runtime"], schema["properties"]["runtime"]["enum"])
         self.assertIn(receipt["confidence"], schema["properties"]["confidence"]["enum"])
@@ -136,6 +137,23 @@ class RepoStructureTests(unittest.TestCase):
                 stderr=subprocess.PIPE,
                 text=True,
             )
+
+    def test_mirror_check_script_fails_on_drift(self):
+        with tempfile.TemporaryDirectory() as temp_root:
+            mirror = Path(temp_root) / "skills"
+            shutil.copytree(REPO_ROOT / "skills", mirror)
+            (mirror / "using-soho" / "SKILL.md").write_text("drift")
+
+            result = subprocess.run(
+                ["bash", "scripts/check-skills-mirror.sh"],
+                cwd=REPO_ROOT,
+                env={**os.environ, "SOHO_SKILLS_MIRROR_DIR": str(mirror)},
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+
+            self.assertNotEqual(result.returncode, 0)
 
     def test_canonical_local_skills_mirror_matches_when_present(self):
         mirror = Path.home() / "skills" / "soho" / "skills"
